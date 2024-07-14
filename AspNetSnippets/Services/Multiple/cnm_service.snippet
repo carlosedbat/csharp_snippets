@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Many Service</Title>
+      <Shortcut>cnm_services</Shortcut>
+      <Description>Cria classe CRUD basica da Services</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>Parameter</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+          <ID>SuplerClassId</ID> <!-- Identificador único para um campo editável -->
+          <Default>superClassId</Default> <!-- Valor padrão para o campo -->
+      </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $Type$Services : I$Type$Services
+                {
+                    public readonly I$Type$Business _$Parameter$Business;
+                    private readonly IWorkUnit _iWorkUnit;
+                    private readonly IMapper _mapper;
+                    private readonly ILogger<I$Type$Services> _iLogger;
+                    private readonly IBaseRepository _baseRepository;
+                
+                    public $Type$Services(
+                        I$Type$Business $Parameter$Business,
+                        IWorkUnit workUnit,
+                        IMapper mapper,
+                        ILogger<$Type$Services> logger,
+                        IBaseRepository baseRepository)
+                    {
+                        this._$Parameter$Business = $Parameter$Business;
+                        this._mapper = mapper;
+                        this._iWorkUnit = workUnit;
+                        this._iLogger = logger;
+                        this._baseRepository = baseRepository;
+                
+                    }
+                
+                    public async Task<ServiceResponseDTO<List<$Type$ViewModel>>> CreateMany(List<$Type$CreateViewModel> $Parameter$CreateViewModel, Guid $SuplerClassId$Id)
+                    {
+                        ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseDTO = new ServiceResponseDTO<List<$Type$ViewModel>>();
+                        try
+                        {
+                            List<$Type$DTO> $Parameter$DTO = this._mapper.Map<List<$Type$DTO>>($Parameter$CreateViewModel);
+                            List<$Type$DTO> $Parameter$ = await this._$Parameter$Business.CreateMany($Parameter$DTO, $SuplerClassId$Id);
+                
+                            serviceResponseDTO.GenericData = this._mapper.Map<List<$Type$ViewModel>>($Parameter$);
+                            serviceResponseDTO.StatusCode = StatusCodes.Status201Created;
+                
+                            await this._iWorkUnit.SaveChangesAsync();
+                            await this._iWorkUnit.CommitAsync();
+                        }
+                        catch (CustomException ex)
+                        {
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, List<$Type$ViewModel>>(ex, ex.StatusCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, List<$Type$ViewModel>>(ex, HttpStatusCode.InternalServerError);
+                        }
+                
+                        return serviceResponseDTO;
+                    }
+                
+                    public async Task<ServiceResponseDTO<$Type$ViewModel>> Delete(Guid id)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = new ServiceResponseDTO<$Type$ViewModel>();
+                        try
+                        {
+                          $Type$ $Parameter$ = await this._baseRepository.Delete<$Type$>(id);
+                
+                          $Type$DTO $Parameter$DTO = $Parameter$ is not null ? this._mapper.Map<$Type$DTO>($Parameter$)
+                                : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+                
+                            serviceResponseDTO.GenericData = this._mapper.Map<$Type$ViewModel>($Parameter$DTO);
+                            serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
+                
+                            await this._iWorkUnit.SaveChangesAsync();
+                            await this._iWorkUnit.CommitAsync();
+                        }
+                        catch (CustomException ex)
+                        {
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, $Type$ViewModel>(ex, ex.StatusCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, $Type$ViewModel>(ex, HttpStatusCode.InternalServerError);
+                        }
+                
+                        return serviceResponseDTO;
+                    }
+                
+                    public async Task<ServiceResponseDTO<List<$Type$ViewModel>>> List($Type$ListViewModel $Parameter$ListViewModel, int pageIndex)
+                    {
+                        ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseDTO = new ServiceResponseDTO<List<$Type$ViewModel>>();
+                        try
+                        {
+                            $Type$DTO $Parameter$DTO = this._mapper.Map<$Type$DTO>($Parameter$ListViewModel);
+                
+                            ListResponseDTO<$Type$DTO> $Parameter$DTOs = await this._$Parameter$Business.List($Parameter$DTO, pageIndex);
+                
+                            serviceResponseDTO.GenericData = this._mapper.Map<List<$Type$ViewModel>>($Parameter$DTOs.Data);
+                            serviceResponseDTO.TotalPages = $Parameter$DTOs.TotalPages;
+                            serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
+                
+                            await this._iWorkUnit.CommitAsync();
+                        }
+                        catch (CustomException ex)
+                        {
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, List<$Type$ViewModel>>(ex, ex.StatusCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, List<$Type$ViewModel>>(ex, HttpStatusCode.InternalServerError);
+                        }
+                
+                        return serviceResponseDTO;
+                    }
+                
+                    public async Task<ServiceResponseDTO<$Type$ViewModel>> Read(Guid id)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = new ServiceResponseDTO<$Type$ViewModel>();
+                        try
+                        {
+                            $Type$DTO $Parameter$DTO = await this._$Parameter$Business.Read(id);
+                
+                            serviceResponseDTO.GenericData = this._mapper.Map<$Type$ViewModel>($Parameter$DTO);
+                            serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
+                
+                            await this._iWorkUnit.CommitAsync();
+                        }
+                        catch (CustomException ex)
+                        {
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, $Type$ViewModel>(ex, ex.StatusCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, $Type$ViewModel>(ex, HttpStatusCode.InternalServerError);
+                        }
+                
+                        return serviceResponseDTO;
+                    }
+                
+                    public async Task<ServiceResponseDTO<$Type$ViewModel>> Update($Type$UpdateViewModel $Parameter$UpdateViewModel)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = new ServiceResponseDTO<$Type$ViewModel>();
+                        try
+                        {
+                            $Type$DTO $Parameter$DTO = this._mapper.Map<$Type$DTO>($Parameter$UpdateViewModel);
+                
+                            $Parameter$DTO = await this._$Parameter$Business.Update($Parameter$DTO);
+                
+                            serviceResponseDTO.GenericData = this._mapper.Map<$Type$ViewModel>($Parameter$DTO);
+                            serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
+                
+                            await this._iWorkUnit.SaveChangesAsync();
+                            await this._iWorkUnit.CommitAsync();
+                        }
+                        catch (CustomException ex)
+                        {
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, $Type$ViewModel>(ex, ex.StatusCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+                
+                            this._iWorkUnit.Rollback();
+                
+                            serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, $Type$ViewModel>(ex, HttpStatusCode.InternalServerError);
+                        }
+                
+                        return serviceResponseDTO;
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

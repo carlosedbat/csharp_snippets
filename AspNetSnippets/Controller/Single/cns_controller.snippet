@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Simple Controller</Title>
+      <Shortcut>cns_controller</Shortcut>
+      <Description>Cria classe CRUD básica do Controller</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>Parameter</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                [Route("api/[controller]")]
+                [ApiController]
+                public class $Type$Controller : ControllerBase
+                {
+                    private readonly I$Type$Services _$Parameter$Services;
+                    private const int _statusCodeTokenExpired = 498;
+                
+                
+                    public $Type$Controller(I$Type$Services $Parameter$Services)
+                    {
+                        this._$Parameter$Services = $Parameter$Services;
+                    }
+                
+                    [Authorize]
+                    [HttpPost]
+                    public async Task<IActionResult> Create([FromBody] $Type$CreateViewModel $Parameter$CreateViewModel)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Create($Parameter$CreateViewModel);
+                
+                        return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
+                    }
+                
+                    [Authorize]
+                    [HttpGet("{id}")]
+                    public async Task<IActionResult> Read(Guid id)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> seviceResponseDTO = await this._$Parameter$Services.Read(id);
+                
+                        return this.StatusCode(seviceResponseDTO.StatusCode, seviceResponseDTO);
+                    }
+                
+                    [Authorize]
+                    [HttpPut]
+                    public async Task<IActionResult> Update([FromBody] $Type$UpdateViewModel $Parameter$UpdateViewModel)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Update($Parameter$UpdateViewModel);
+                
+                        return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
+                    }
+                
+                    [Authorize]
+                    [HttpDelete("{id}")]
+                    public async Task<IActionResult> Delete(Guid id)
+                    {
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Delete(id);
+                
+                        return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
+                    }
+                
+                    [Authorize]
+                    [HttpGet]
+                    public async Task<IActionResult> List([FromQuery] $Type$ListViewModel $Parameter$ListViewModel, [FromQuery] int pageIndex)
+                    {
+                        ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseViewModel = await this._$Parameter$Services.List($Parameter$ListViewModel, pageIndex);
+                
+                        return this.StatusCode(serviceResponseViewModel.StatusCode, serviceResponseViewModel);
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

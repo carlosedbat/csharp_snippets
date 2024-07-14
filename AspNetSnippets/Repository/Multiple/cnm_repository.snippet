@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Many Repository</Title>
+      <Shortcut>cnm_repository</Shortcut>
+      <Description>Cria classe CRUD básica do Repository</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>Parameter</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+          <ID>SuplerClassId</ID> <!-- Identificador único para um campo editável -->
+          <Default>superClassId</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $Type$Repository : I$Type$Repository
+                {
+                    private readonly AppDbContext _appDbContext;
+                
+                    public $Type$Repository(AppDbContext appDbContext)
+                    {
+                        this._appDbContext = appDbContext;
+                    }
+                
+                    public async Task<List<$Type$>> CreateMany(List<$Type$> $Parameter$, Guid $SuplerClassId$Id)
+                    {
+                        if ($Parameter$.Count > 0)
+                        {
+                            foreach (var variable in $Parameter$)
+                            {
+                                variable.$SuplerClassId$Id = $SuplerClassId$Id;
+                                await this._appDbContext.$Type$.AddAsync(variable);
+                            }
+                
+                            return $Parameter$;
+                        }
+                        return null;
+                    }
+                
+                    public async Task<int> GetQuantityOf$Type$($Type$DTO $Parameter$DTO)
+                    {
+                        IQueryable<$Type$> query = this._appDbContext.$Type$;
+                
+                        query = this.ApplyFilters($Parameter$DTO, query);
+                
+                        return await query.CountAsync();
+                    }
+                
+                    public async Task<List<$Type$>> List($Type$DTO $Parameter$DTO, int pageIndex)
+                    {
+                        IQueryable<$Type$> query = this._appDbContext.$Type$;
+                
+                        query = this.IncludeSubmembers(query);
+                        query = this.ApplyFilters($Parameter$DTO, query);
+                
+                        if (pageIndex <= 0)
+                        {
+                            pageIndex = ApplicationDefaultConfiguration.DefaultPageIndex();
+                        }
+                
+                        int itensByPage = ConfigurationHelper.GetItemsPerPage();
+                        int skipedItens = (pageIndex - 1) * itensByPage;
+                
+                        return await query.Skip(skipedItens).Take(itensByPage).ToListAsync();
+                    }
+                
+                    public async Task<$Type$> Read(Guid id)
+                    {
+                        IQueryable<$Type$> query = this._appDbContext.$Type$;
+                
+                        query = this.IncludeSubmembers(query);
+                
+                        return await query.FirstOrDefaultAsync(t => t.Id == id);
+                    }
+                
+                    public async Task<$Type$> Update($Type$ current$Type$, $Type$ new$Type$)
+                    {
+                        this._appDbContext.Entry(current$Type$).CurrentValues.SetValues(new$Type$);
+                
+                        return new$Type$;
+                    }
+                
+                    private IQueryable<$Type$> IncludeSubmembers(IQueryable<$Type$> query)
+                    {
+                        return query;
+                    }
+                
+                    private IQueryable<$Type$> ApplyFilters($Type$DTO $Parameter$, IQueryable<$Type$> query)
+                    {
+                
+                        if (!string.IsNullOrEmpty($Parameter$.Name))
+                        {
+                            query = query.Where(u => u.Name.ToLower().Contains($Parameter$.Name.ToLower()));
+                        }
+                
+                        if ($Parameter$.Address != default(int))
+                        {
+                            query = query.Where(u => u.Address == $Parameter$.Address);
+                        }
+                
+                        if ($Parameter$.$SuplerClassId$Id != Guid.Empty)
+                        {
+                            query = query.Where(u => u.$SuplerClassId$Id == $Parameter$.$SuplerClassId$Id);
+                        }
+                        
+                        if ($Parameter$.SampleTrip != 0 && EnumUtils.ValidateEnum<EnumTripStatus>($Parameter$.SampleTrip))
+                        {
+                            query = query.Where(u => u.SampleTrip == $Parameter$.SampleTrip);
+                        }
+
+                        return query;
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

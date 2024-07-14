@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Interface Simple Repository</Title>
+      <Shortcut>cnis_repository</Shortcut>
+      <Description>Cria Interface Repository</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>param2</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                    public interface I$param1$Repository
+                    {
+                        Task<List<$param1$>> List($param1$ $param2$Filter, int pageIndex);
+
+                        Task<$param1$> Read(Guid id);
+
+                        Task<$param1$> Update($param1$ current$param1$, $param1$ new$param1$);
+
+                        Task<int> GetQuantityOf$param1$($param1$ $param2$Filter);
+                    }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

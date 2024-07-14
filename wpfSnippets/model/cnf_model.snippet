@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Full Model</Title>
+      <Shortcut>cnf_model</Shortcut>
+      <Description>Cria classe CRUD completa da Model</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>param2</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $param1$Model : I$param1$Model
+{
+    private I$param1$Repository _$param2$Repository;
+    private IMapper _mapper;
+
+    public $param1$Model(I$param1$Repository $param2$Repository, IMapper mapper) 
+    {
+        _$param2$Repository = $param2$Repository;
+        _mapper = mapper;
+    }
+
+    public async Task<$param1$DTO> Create($param1$DTO $param2$DTO)
+    {
+        try
+        {
+            Validate$param1$($param2$DTO);
+
+            $param2$DTO.CreatedAt = DateTime.Now.ToUniversalTime();
+
+            $param1$ $param2$ = this._mapper.Map<$param1$>($param2$DTO);
+
+            $param1$ created$param1$ = await this._$param2$Repository.Create($param2$);
+
+            $param2$DTO = $param2$ is not null ? this._mapper.Map<$param1$DTO>($param2$) : throw new Exception();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Delete(Guid $param2$Id)
+    {
+        try
+        {
+            $param1$ $param2$ = await this._$param2$Repository.Delete($param2$Id);
+
+            $param1$DTO $param2$DTO = $param2$ is not null ? this._mapper.Map<$param1$DTO>($param2$) : throw new Exception();
+
+            return $param2$DTO;
+
+        } catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async Task<List<$param1$DTO>> List($param1$DTO $param2$FilterDTO)
+    {
+        try
+        {
+            $param1$ $param2$Filter = this._mapper.Map<$param1$>($param2$FilterDTO);
+
+            List<$param1$> listOf$param1$ = await this._$param2$Repository.List($param2$Filter);
+
+            List<$param1$DTO> listOf$param1$DTO = listOf$param1$.Count >= 0 ? this._mapper.Map<List<$param1$DTO>>(listOf$param1$) : throw new Exception();
+
+            return listOf$param1$DTO;
+
+        } catch(Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Read(Guid $param2$Id)
+    {
+        try
+        {
+            $param1$ $param2$ = await _$param2$Repository.Read($param2$Id);
+
+            $param1$DTO $param2$DTO = this._mapper.Map<$param1$DTO>($param2$);
+
+            return $param2$DTO;
+
+        } catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Update($param1$DTO new$param1$DTO)
+    {
+        try
+        {
+            if (new$param1$DTO.Id == Guid.Empty)
+            {
+                throw new ValidationException($param1$ErrorsConst.$param1$IdNullOrVoidError);
+            }
+
+            $param1$ current$param1$ = await this._$param2$Repository.Read(new$param1$DTO.Id);
+
+            $param1$DTO current$param1$DTO = current$param1$ is not null ? this._mapper.Map<$param1$DTO>(current$param1$) : throw new Exception();
+
+            current$param1$DTO.UpdateFromDTO(new$param1$DTO);
+
+            $param1$ new$param1$ = this._mapper.Map<$param1$>(current$param1$DTO);
+
+            new$param1$ = await this._$param2$Repository.Update(current$param1$.Id, new$param1$);
+
+            $param1$DTO $param2$UpdatedDTO = this._mapper.Map<$param1$DTO>(new$param1$);
+
+            return $param2$UpdatedDTO;
+        } catch (Exception ex) 
+        {
+            throw;
+        }
+    }
+
+    public void Validate$param1$($param1$DTO $param2$DTO)
+    {
+       
+    }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

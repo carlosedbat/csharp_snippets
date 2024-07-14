@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Builder Filter for iqueryable EF</Title>
+      <Shortcut>cnfb_queryable</Shortcut>
+      <Description>Cria um filter queryable para o Entity Framework utilizando o Pattern Builder</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>param2</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+          <ID>SuplerClassId</ID> <!-- Identificador único para um campo editável -->
+          <Default>superClassId</Default> <!-- Valor padrão para o campo -->
+      </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $param1$FilterBuilder
+                {
+                    private IQueryable<$param1$> _query;
+                
+                    public $param1$FilterBuilder(IQueryable<$param1$> query)
+                    {
+                        _query = query;
+                    }
+                
+                    public IQueryable<$param1$> Build()
+                    {
+                        return _query;
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

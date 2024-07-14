@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Simple Business</Title>
+      <Shortcut>cns_business</Shortcut>
+      <Description>Cria classe CRUD básica da Business</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>Parameter</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $Type$Business : I$Type$Business
+                {
+                    private readonly IMapper _mapper;
+                    private readonly IBaseRepository _iBaseRepository;
+                    private readonly I$Type$Repository _i$Type$Repository;
+                    private readonly IEnterpriseRepository _iEnterpriseRepository;
+            
+                    public $Type$Business(
+                        IMapper mapper,
+                        IBaseRepository baseRepository,
+                        I$Type$Repository i$Type$Repository,
+                        IEnterpriseRepository iEnterpriseRepository)
+                    {
+                        this._mapper = mapper;
+                        this._iBaseRepository = baseRepository;
+                        this._i$Type$Repository = i$Type$Repository;
+                        this._iEnterpriseRepository = iEnterpriseRepository;
+                    }
+            
+                    public async Task<$Type$DTO> Create($Type$DTO $Parameter$DTO)
+                    {
+                        Guid enterpriseId = $Parameter$DTO.EnterpriseId;
+            
+                        Enterprise enterprise = await this._iEnterpriseRepository.Read(enterpriseId);
+            
+                        $Type$ $Parameter$ = this._mapper.Map<$Type$>($Parameter$DTO);
+            
+                        $Type$ $Parameter$Created = await this._iBaseRepository.Create<$Type$>($Parameter$);
+            
+                        $Type$DTO $Parameter$CreatedDTO = $Parameter$Created is not null ? this._mapper.Map<$Type$DTO>($Parameter$Created)
+                            : throw new CustomException(HttpStatusCode.BadRequest, BadRequestMessages.$Type$, new HttpRequestException());
+            
+                        return $Parameter$CreatedDTO;
+                    }
+            
+                    public async Task<$Type$DTO> Delete(Guid id)
+                    {
+                        $Type$ $Parameter$ = await this._i$Type$Repository.Read(id);
+            
+                        $Parameter$ = await this._iBaseRepository.Delete<$Type$>($Parameter$.Id);
+            
+                        if ($Parameter$ is null)
+                        {
+                            throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+                        }
+            
+                        $Type$DTO $Parameter$DTO = $Parameter$ is not null ? this._mapper.Map<$Type$DTO>($Parameter$)
+                          : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        return $Parameter$DTO;
+                    }
+            
+                    public async Task<ListResponseDTO<$Type$DTO>> List($Type$DTO $Parameter$Filter, int pageIndex)
+                    {
+                        $Type$ $Parameter$EntityFilter = this._mapper.Map<$Type$>($Parameter$Filter);
+
+                        List<$Type$> $Parameter$ = await this._i$Type$Repository.List($Parameter$EntityFilter, pageIndex);
+            
+                        List<$Type$DTO> $Parameter$DTOs = $Parameter$.Count != 0 ? this._mapper.Map<List<$Type$DTO>>($Parameter$)
+                            : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        int quantityOf$Type$ = await this._i$Type$Repository.GetQuantityOf$Type$($Parameter$EntityFilter);
+            
+                        int itensByPage = ConfigurationHelper.GetItemsPerPage();
+            
+                        int totalPages = MathAdvanced.DivideAndRoundUp(quantityOf$Type$, itensByPage);
+            
+                        ListResponseDTO<$Type$DTO> response$Type$ = new ListResponseDTO<$Type$DTO>()
+                        {
+                            Data = $Parameter$DTOs,
+                            TotalPages = totalPages,
+                        };
+            
+                        return response$Type$;
+                    }
+            
+                    public async Task<$Type$DTO> Read(Guid $Parameter$Id)
+                    {
+                      $Type$ $Parameter$ = await this._iBaseRepository.Read<$Type$>($Parameter$Id);
+            
+                      $Type$DTO $Parameter$DTO = $Parameter$ is not null ? this._mapper.Map<$Type$DTO>($Parameter$)
+                            : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        return $Parameter$DTO;
+                    }
+            
+                    public async Task<$Type$DTO> Update($Type$DTO $Parameter$DTO)
+                    {
+                      $Type$ $Parameter$Old = await this._i$Type$Repository.Read($Parameter$DTO.Id);
+            
+                        $Type$DTO new$Type$DTO = $Parameter$Old is not null ? this._mapper.Map<$Type$DTO>($Parameter$Old)
+                                : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        new$Type$DTO.UpdateFromDTO($Parameter$DTO);
+            
+                        $Type$ new$Type$ = new$Type$DTO is not null ? this._mapper.Map<$Type$>(new$Type$DTO)
+                                : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        new$Type$ = await this._i$Type$Repository.Update($Parameter$Old, new$Type$);
+            
+                        new$Type$DTO = new$Type$ is not null ? this._mapper.Map<$Type$DTO>(new$Type$)
+                                : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
+            
+                        return new$Type$DTO;
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

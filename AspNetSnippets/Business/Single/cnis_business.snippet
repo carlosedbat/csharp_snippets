@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Interface Simple Business</Title>
+      <Shortcut>cnis_business</Shortcut>
+      <Description>Cria a Interface Business com metodos de simple create</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>Parameter</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public interface I$Type$Business
+                {
+                    Task<$Type$DTO> Create($Type$DTO $Parameter$DTO);
+
+                    Task<$Type$DTO> Delete(Guid id);
+
+                    Task<ListResponseDTO<$Type$DTO>> List($Type$DTO $Parameter$Filter, int pageIndex);
+
+                    Task<$Type$DTO> Read(Guid $Parameter$Id);
+                    
+                    Task<$Type$DTO> Update($Type$DTO $Parameter$DTO);
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
