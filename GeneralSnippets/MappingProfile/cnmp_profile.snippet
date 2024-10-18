@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New General Mapping Profile</Title>
+      <Shortcut>cnmp_profile</Shortcut>
+      <Description>Cria um novo mapping profile</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $param1$Profile : Profile
+                {
+                    public $param1$Profile()
+                    {
+                        this.CreateMap<$param1$DTO, $param1$>()
+                            .ForMember(dest => dest.ListOf$param1$, opt => opt.MapFrom(src => src.ListOf$param1$DTO));
+
+                        this.CreateMap<$param1$, $param1$DTO>()
+                            .ForMember(dest => dest.ListOf$param1$DTO, opt => opt.MapFrom(src => src.ListOf$param1$));
+
+                        this.CreateMap<$param1$DTO, $param1$ViewModel>()
+                          .ForMember(dest => dest.ListOf$param1$ViewModel, opt => opt.MapFrom(src => src.ListOf$param1$DTO));
+
+                        this.CreateMap<$param1$ViewModel, $param1$DTO>()
+                            .ForMember(dest => dest.AssetDTO, opt => opt.MapFrom(src => src.AssetViewModel));
+
+                        this.CreateMap<$param1$CreateViewModel, $param1$DTO>();
+
+                        this.CreateMap<$param1$UpdateViewModel, $param1$DTO>();
+
+                        this.CreateMap<$param1$ListViewModel, $param1$DTO>();
+                    }
+                }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
