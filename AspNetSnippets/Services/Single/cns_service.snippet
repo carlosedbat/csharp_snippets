@@ -90,7 +90,7 @@
                           $Type$DTO $Parameter$DTO = $Parameter$ is not null ? this._mapper.Map<$Type$DTO>($Parameter$)
                                 : throw new CustomException(HttpStatusCode.NotFound, NotFoundMessages.$Type$, new HttpRequestException());
                 
-                            serviceResponseDTO.GenericData = this._mapper.Map<$Type$ViewModel>($Parameter$);
+                            serviceResponseDTO.GenericData = this._mapper.Map<$Type$ViewModel>($Parameter$DTO);
                             serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
                 
                             await this._iWorkUnit.SaveChangesAsync();
