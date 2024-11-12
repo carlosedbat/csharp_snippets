@@ -23,22 +23,22 @@
       </Declarations>
       <Code Language="csharp">
                 <![CDATA[
-                public class $param1$PresenterIntegrationTest : IntegrationTestBase
+                public class $param1$ServiceIntegrationTest : IntegrationTestBase
                 {
-                    private readonly $param1$Model _$param2$Model;
-                    private readonly $param1$Presenter _$param2$Presenter;
+                    private readonly $param1$Business _$param2$Business;
+                    private readonly $param1$Service _$param2$Service;
             
-                    public $param1$PresenterIntegrationTest()
+                    public $param1$ServiceIntegrationTest()
                     {
-                        _$param2$Model = new $param1$Model(new $param1$Repository(DbContext), Mapper);
-                        _$param2$Presenter = new $param1$Presenter(_$param2$Model, new WorkUnit(DbContext));
+                        _$param2$Business = new $param1$Business(new $param1$Repository(DbContext), Mapper);
+                        _$param2$Service = new $param1$Service(_$param2$Business, new WorkUnit(DbContext));
                     }
             
                     [Theory]
                     [MemberData(nameof($param1$TestData.Get$param1$s), MemberType = typeof($param1$TestData))]
                     public async Task Create_ShouldPersistData_When$param1$IsCreated($param1$DTO $param2$DTO)
                     {
-                        var result = await _$param2$Presenter.Create($param2$DTO);
+                        var result = await _$param2$Service.Create($param2$DTO);
             
                         Assert.NotNull(result);
                         Assert.IsType<$param1$DTO>(result);
@@ -55,7 +55,7 @@
                     {
                         $param2$DTO.Cnpj = null;
             
-                        var exception = await Assert.ThrowsAsync<ValidationException>(() => _$param2$Presenter.Create($param2$DTO));
+                        var exception = await Assert.ThrowsAsync<ValidationException>(() => _$param2$Service.Create($param2$DTO));
             
                         Assert.Equal($param1$ErrorsConst.CnpjNullOrVoidError, exception.Message);
                     }
@@ -64,9 +64,9 @@
                     [MemberData(nameof($param1$TestData.Get$param1$s), MemberType = typeof($param1$TestData))]
                     public async Task Delete_ShouldRemoveData_When$param1$IsDeleted($param1$DTO $param2$DTO)
                     {
-                        var created$param1$ = await _$param2$Presenter.Create($param2$DTO);
+                        var created$param1$ = await _$param2$Service.Create($param2$DTO);
             
-                        var result = await _$param2$Presenter.Delete(created$param1$.Id);
+                        var result = await _$param2$Service.Delete(created$param1$.Id);
             
                         Assert.NotNull(result);
                         Assert.IsType<$param1$DTO>(result);
@@ -96,10 +96,10 @@
                             Image = $param2$DTO.Image
                         };
             
-                        await _$param2$Presenter.Create($param2$DTO1);
-                        await _$param2$Presenter.Create($param2$DTO2);
+                        await _$param2$Service.Create($param2$DTO1);
+                        await _$param2$Service.Create($param2$DTO2);
             
-                        var result = await _$param2$Presenter.List(new $param1$DTO());
+                        var result = await _$param2$Service.List(new $param1$DTO());
             
                         Assert.NotNull(result);
                         Assert.IsType<List<$param1$DTO>>(result);
@@ -110,9 +110,9 @@
                     [MemberData(nameof($param1$TestData.Get$param1$s), MemberType = typeof($param1$TestData))]
                     public async Task Read_ShouldReturn$param1$_When$param1$IsRead($param1$DTO $param2$DTO)
                     {
-                        var created$param1$ = await _$param2$Presenter.Create($param2$DTO);
+                        var created$param1$ = await _$param2$Service.Create($param2$DTO);
             
-                        var result = await _$param2$Presenter.Read(created$param1$.Id);
+                        var result = await _$param2$Service.Read(created$param1$.Id);
             
                         Assert.NotNull(result);
                         Assert.IsType<$param1$DTO>(result);
@@ -123,7 +123,7 @@
                     [MemberData(nameof($param1$TestData.Get$param1$s), MemberType = typeof($param1$TestData))]
                     public async Task Update_ShouldPersistChanges_When$param1$IsUpdated($param1$DTO $param2$DTO)
                     {
-                        var created$param1$ = await _$param2$Presenter.Create($param2$DTO);
+                        var created$param1$ = await _$param2$Service.Create($param2$DTO);
             
                         Assert.NotNull(created$param1$);
                         Assert.IsType<$param1$DTO>(created$param1$);
@@ -131,13 +131,13 @@
             
                         created$param1$.CompanyName = "Updated Company";
             
-                        var result = await _$param2$Presenter.Update(created$param1$);
+                        var result = await _$param2$Service.Update(created$param1$);
             
                         Assert.NotNull(result);
                         Assert.IsType<$param1$DTO>(result);
                         Assert.Equal("Updated Company", result.CompanyName);
             
-                        var updated$param1$ = await _$param2$Presenter.Read(result.Id);
+                        var updated$param1$ = await _$param2$Service.Read(result.Id);
                         Assert.NotNull(updated$param1$);
                         Assert.Equal("Updated Company", updated$param1$.CompanyName);
                     }

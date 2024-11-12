@@ -57,6 +57,8 @@
 
             query = new $param1$FilterBuilder(query)
                         .Build();
+                        
+            uery = this.IncludeSubmembers(query);
 
             return await query.ToListAsync();
         }
@@ -86,6 +88,11 @@
 
             return $param2$ToUpdate;
     }
+
+            private IQueryable<$param1$> IncludeSubmembers(IQueryable<$param1$> query)
+        {
+            return query;
+        }
 }
                 ]]>
             </Code>

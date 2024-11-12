@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Full Service</Title>
+      <Shortcut>cnf_service</Shortcut>
+      <Description>Cria Class CRUD completa da Service</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+        <Literal>
+            <ID>param2</ID> <!-- Identificador único para um campo editável -->
+            <Default>newParameter</Default> <!-- Valor padrão para o campo -->
+          </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+                public class $param1$Service : I$param1$Service
+{
+    private I$param1$Business _$param2$Business;
+    private readonly IWorkUnit _iWorkUnit;
+
+    public $param1$Service(I$param1$Business $param2$Business, IWorkUnit workUnit)
+    {
+        _$param2$Business = $param2$Business;
+        _iWorkUnit = workUnit;
+    }
+
+    public async Task<$param1$DTO> Create($param1$DTO $param2$DTO)
+    {
+        try
+        {
+            _$param2$Business.Validate$param1$($param2$DTO);
+
+            $param2$DTO = await this._$param2$Business.Create($param2$DTO);
+            await this._iWorkUnit.SaveChangesAsync();
+            await this._iWorkUnit.CommitAsync();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            this._iWorkUnit.Rollback();
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Delete(Guid $param2$Id)
+    {
+        try
+        {
+            $param1$DTO $param2$DTO = await this._$param2$Business.Delete($param2$Id);
+            await this._iWorkUnit.SaveChangesAsync();
+            await this._iWorkUnit.CommitAsync();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            this._iWorkUnit.Rollback();
+            throw;
+        }
+    }
+
+    public async Task<List<$param1$DTO>> List($param1$DTO $param2$FilterDTO)
+    {
+        try
+        {
+            List<$param1$DTO> $param2$DTO = await this._$param2$Business.List($param2$FilterDTO);
+            await this._iWorkUnit.CommitAsync();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            this._iWorkUnit.Rollback();
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Read(Guid $param2$Id)
+    {
+        try
+        {
+            $param1$DTO $param2$DTO = await this._$param2$Business.Read($param2$Id);
+            await this._iWorkUnit.CommitAsync();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            this._iWorkUnit.Rollback();
+            throw;
+        }
+    }
+
+    public async Task<$param1$DTO> Update($param1$DTO new$param1$DTO)
+    {
+        try
+        {
+            $param1$DTO $param2$DTO = await this._$param2$Business.Update(new$param1$DTO);
+            await this._iWorkUnit.SaveChangesAsync();
+            await this._iWorkUnit.CommitAsync();
+
+            return $param2$DTO;
+        }
+        catch (Exception ex)
+        {
+            this._iWorkUnit.Rollback();
+            throw;
+        }
+    }
+}
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

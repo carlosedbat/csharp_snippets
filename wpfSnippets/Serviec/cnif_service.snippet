@@ -2,9 +2,9 @@
 <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
   <CodeSnippet Format="1.0.0">
     <Header>
-      <Title>Create New DTO with update from</Title>
-      <Shortcut>cndto_wu</Shortcut>
-      <Description>Cria um novo dto com validação</Description>
+      <Title>Create New Interface Full Service</Title>
+      <Shortcut>cnif_service</Shortcut>
+      <Description>Cria Interface CRUD completa da Service</Description>
       <Author>Carlos Eduardo Batista</Author>
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
@@ -23,21 +23,17 @@
       </Declarations>
       <Code Language="csharp">
                 <![CDATA[
-                public class $param1$DTO : BaseEntityIdAndCreatedAtDTO
+                public interface I$param1$Service
                 {
-                    $param2$
-
-                    public DateTime? UpdatedAt { get; set; }
-
-                    public void UpdateFromDTO($param1$DTO newVariable$param1$DTO)
-                    {
-                        var builder = new DtoValidationBuilder<$param1$DTO>(this);
-
-                        if (builder.VerifyIfHasAnyChange())
-                        {
-                            this.UpdatedAt = DateTime.UtcNow;
-                        }
-                    }
+                    Task<$param1$DTO> Create($param1$DTO $param2$FilterDTO);
+            
+                    Task<$param1$DTO> Delete(Guid id);
+            
+                    Task<List<$param1$DTO>> List($param1$DTO $param2$FilterDTO);
+            
+                    Task<$param1$DTO> Read(Guid $param2$Id);
+            
+                    Task<$param1$DTO> Update($param1$DTO $param2$DTO);
                 }
                 ]]>
             </Code>

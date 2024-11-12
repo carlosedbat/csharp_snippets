@@ -3,7 +3,7 @@
   <CodeSnippet Format="1.0.0">
     <Header>
       <Title>Create New Filter Function String Size False</Title>
-      <Shortcut>cnff_stringsizefalse</Shortcut>
+      <Shortcut>cnff_stringSensitive</Shortcut>
       <Description>Filtra por string sem diferenciação de maiúsculas e minúsculas</Description>
       <Author>Carlos Eduardo Batista</Author>
       <SnippetTypes>
@@ -31,7 +31,7 @@
                 {
                     if (!string.IsNullOrEmpty($param3$))
                     {
-                        _query = _query.Where(u => u.$param2$.ToLower().Contains($param3$.ToLower()));
+                        _query = _query.Where(u => EF.Functions.ILike(u.$param2$, $param3$));
                     }
                     return this;
                 }
