@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create New Dependency Injection Configuration</Title>
+      <Shortcut>cndpi_config</Shortcut>
+      <Description>Cria um novo arquivo de configuracao de injecao de dependencias</Description>
+      <Author>Carlos Eduardo Batista</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>param1</ID> <!-- Identificador único para um campo editável -->
+          <Default>ClassName</Default> <!-- Valor padrão para o campo -->
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+                <![CDATA[
+    #region USINGS
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    #endregion
+
+    public static class DependencyInjectionConfig
+    {
+        public static void RegisterServicesInjection(IServiceCollection services)
+        {
+            $param1$
+        }
+    }
+                ]]>
+            </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
