@@ -116,38 +116,47 @@
                         return serviceResponseDTO;
                     }
                 
-                    public async Task<ServiceResponseDTO<List<$Type$ViewModel>>> List($Type$ListViewModel $Parameter$ListViewModel, int pageIndex)
+                    public async Task<ServiceResponseDTO<List<$Type$ViewModel>>> List($Type$ListViewModel $Parameter$ListViewModel)
                     {
                         ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseDTO = new ServiceResponseDTO<List<$Type$ViewModel>>();
+                        ServiceListResponseDTO<$Type$ViewModel> response = new ServiceListResponseDTO<$Type$ViewModel>();
+
                         try
                         {
-                          $Type$DTO $Parameter$DTO = this._mapper.Map<$Type$DTO>($Parameter$ListViewModel);
-                
-                            ListResponseDTO<$Type$DTO> $Parameter$DTOs = await this._$Parameter$Business.List($Parameter$DTO, pageIndex);
-                
-                            serviceResponseDTO.GenericData = this._mapper.Map<List<$Type$ViewModel>>($Parameter$DTOs.Data);
-                            serviceResponseDTO.TotalPages = $Parameter$DTOs.TotalPages;
+                            $Type$ListDTO list$Type$DTO = this._mapper.Map<$Type$ListDTO>($Parameter$ListViewModel);
+                            ListResponseDTO<$Type$DTO> $Parameter$DTOList = await this._$Parameter$Business.List(list$Type$DTO, $Parameter$ListViewModel.PageIndex, $Parameter$ListViewModel.PageSize);
+
+                            serviceResponseDTO.GenericData = this._mapper.Map<List<$Type$ViewModel>>($Parameter$DTOList.Data);
+                            serviceResponseDTO.TotalPages = $Parameter$DTOList.TotalPages;
                             serviceResponseDTO.StatusCode = StatusCodes.Status200OK;
-                
+
                             await this._iWorkUnit.CommitAsync();
+
+
+                            response.ServiceResponseDTO = serviceResponseDTO;
+
+                            response.PaginationDTO = new PaginationDTO(
+                                $Parameter$ListViewModel.PageSize,
+                                $Parameter$DTOList.TotalCount.Value,
+                                $Parameter$ListViewModel.PageIndex);
                         }
                         catch (CustomException ex)
                         {
-                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
-                
                             this._iWorkUnit.Rollback();
-                
+
+                            this._iLogger.LogError(ex.Message, ex.StatusCode, ex.InnerException);
+
                             serviceResponseDTO = CatchFunctions.ServiceResponse<CustomException, List<$Type$ViewModel>>(ex, ex.StatusCode);
                         }
                         catch (Exception ex)
                         {
-                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
-                
                             this._iWorkUnit.Rollback();
-                
+
+                            this._iLogger.LogCritical(ex.Message, ex.InnerException);
+
                             serviceResponseDTO = CatchFunctions.ServiceResponse<Exception, List<$Type$ViewModel>>(ex, HttpStatusCode.InternalServerError);
                         }
-                
+
                         return serviceResponseDTO;
                     }
                 

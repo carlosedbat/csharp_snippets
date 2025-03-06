@@ -43,7 +43,7 @@
                         return await query.CountAsync();
                     }
 
-                    public async Task<List<$param1$>> List($param1$ $param2$Filter, int pageIndex)
+                    public async Task<List<$param1$>> List($param1$ $param2$Filter, int pageIndex, int itensByPage)
                     {
                         IQueryable<$param1$> query = this._appDbContext.$param1$;
 
@@ -57,8 +57,9 @@
                             pageIndex = ApplicationDefaultConfiguration.DefaultPageIndex();
                         }
 
-                        int itensByPage = ConfigurationHelper.GetItemsPerPage();
-                        int skipedItens = (pageIndex - 1) * itensByPage;
+                        int previousIndex = (int)MathBasic.SubtractNumbers(pageIndex, 1);
+
+                        int skipedItens = (int)MathBasic.MultiplyNumbers(previousIndex, itensByPage);
 
                         return await query.Skip(skipedItens).Take(itensByPage).ToListAsync();
                     }

@@ -36,49 +36,109 @@
                         this._$Parameter$Services = $Parameter$Services;
                     }
                 
-                    [Authorize]
+                    /// <summary>
+                    /// Cria uma $Type$ a partir do objeto <paramref name="$Type$CreateViewModelList"/>.
+                    /// </summary>
+                    /// <param name="$Type$CreateViewModelList"> Objeto para criaçaõ do $Type$.</param>
+                    /// <returns>Um objeto <see cref="IActionResult"/> que representa o resultado da operação.</returns>
+                    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+                    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+                    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [SwaggerResponse(_statusCodeTokenExpired, "Token Expired", typeof(string))]
+                    [Authorize(Roles = "admin,managerRoot,manager,specialistInCalibration")]
                     [HttpPost]
-                    public async Task<IActionResult> Create([FromBody] $Type$CreateViewModel $Parameter$CreateViewModel)
+                    public async Task<IActionResult> Create([FromBody] List<$Type$CreateViewModel> $Parameter$CreateViewModelList)
                     {
-                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Create($Parameter$CreateViewModel);
-                
+                        ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseDTO = await this._$Parameter$Services.Create($Parameter$CreateViewModelList);
+
                         return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
                     }
                 
+                    /// <summary>
+                    /// Busca uma $Type$ a partir do <paramref name="id"/>.
+                    /// </summary>
+                    /// <param name="id"> Variável  para buscar uma $Type$.</param>
+                    /// <returns>Um objeto <see cref="IActionResult"/> que representa o resultado da operação.</returns>
+                    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+                    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+                    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [SwaggerResponse(_statusCodeTokenExpired, "Token Expired", typeof(string))]
                     [Authorize]
                     [HttpGet("{id}")]
                     public async Task<IActionResult> Read(Guid id)
                     {
-                        ServiceResponseDTO<$Type$ViewModel> seviceResponseDTO = await this._$Parameter$Services.Read(id);
-                
-                        return this.StatusCode(seviceResponseDTO.StatusCode, seviceResponseDTO);
+                        ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Read(id);
+
+                        return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
                     }
                 
-                    [Authorize]
+                    /// <summary>
+                    /// Atualiza uma $Type$ a partir do objeto <paramref name="$Parameter$UpdateViewModel"/>.
+                    /// </summary>
+                    /// <param name="$Parameter$UpdateViewModel"> Objeto para atualizar uma $Type$.</param>
+                    /// <returns>Um objeto <see cref="IActionResult"/> que representa o resultado da operação.</returns>
+                    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+                    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+                    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [SwaggerResponse(_statusCodeTokenExpired, "Token Expired", typeof(string))]
+                    [Authorize(Roles = "admin,managerRoot,manager,specialistInCalibration")]
                     [HttpPut]
                     public async Task<IActionResult> Update([FromBody] $Type$UpdateViewModel $Parameter$UpdateViewModel)
                     {
                         ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Update($Parameter$UpdateViewModel);
-                
+
                         return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
                     }
                 
-                    [Authorize]
+                    /// <summary>
+                    /// Deleta uma $Type$ a partir do <paramref name="id"/>.
+                    /// </summary>
+                    /// <param name="id"> Variável para atualizar uma $Type$.</param>
+                    /// <returns>Um objeto <see cref="IActionResult"/> que representa o resultado da operação.</returns>
+                    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+                    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+                    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [Authorize(Roles = "admin,managerRoot,manager,specialistInCalibration")]
                     [HttpDelete("{id}")]
                     public async Task<IActionResult> Delete(Guid id)
                     {
                         ServiceResponseDTO<$Type$ViewModel> serviceResponseDTO = await this._$Parameter$Services.Delete(id);
-                
+
                         return this.StatusCode(serviceResponseDTO.StatusCode, serviceResponseDTO);
                     }
                 
+                    /// <summary>
+                    /// Lista as $Type$ a partir do  filtro <paramref name="$Parameter$ListViewModel"/>.
+                    /// </summary>
+                    /// <param name="$Parameter$ListViewModel"> Filtro para listar as $Type$.</param>
+                    /// <returns>Um objeto <see cref="IActionResult"/> que representa o resultado da operação.</returns>
+                    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+                    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+                    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
+                    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceResponseDTO<$Type$ViewModel>))]
                     [Authorize]
                     [HttpGet]
-                    public async Task<IActionResult> List([FromQuery] $Type$ListViewModel $Parameter$ListViewModel, [FromQuery] int pageIndex)
+                    public async Task<IActionResult> List([FromQuery] $Type$ListViewModel $Parameter$ListViewModel)
                     {
-                        ServiceResponseDTO<List<$Type$ViewModel>> serviceResponseViewModel = await this._$Parameter$Services.List($Parameter$ListViewModel, pageIndex);
-                
-                        return this.StatusCode(serviceResponseViewModel.StatusCode, serviceResponseViewModel);
+                        ServiceListResponseDTO<$Type$ViewModel> serviceResponseViewModel = await this._$Parameter$Services.List($Parameter$ListViewModel);
+
+                        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(serviceResponseViewModel.PaginationDTO));
+
+                        return this.StatusCode(serviceResponseViewModel.ServiceResponseDTO.StatusCode, serviceResponseViewModel.ServiceResponseDTO);
                     }
                 }
                 ]]>
